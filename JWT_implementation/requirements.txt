@@ -1,0 +1,5 @@
+"fastapi[standard]"
+sqlmodel #ORM
+pyjwt # validating json web tokens
+python-multipart # form data
+"pwdlib[argon2]" # password hashing
