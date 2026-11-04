@@ -3,7 +3,7 @@ from sqlmodel import Session, SQLModel, Field, select
 
 from app.db import get_session
 from app.models import User
-from app.utils import hash_password
+from app.utils import hash_password, check_password, create_access_token
 
 router = APIRouter()
 
@@ -41,3 +41,33 @@ def register_user(data: UserRegister, session: Session = Depends(get_session)):
             detail="Something went wrong"
         )
     return {"message":"user created successfully"}
+
+# Login API (Public API)
+
+class UserLogin(SQLModel):
+    username: str
+    password: str
+    
+@router.post("/login")
+def user_login(data: UserLogin, session: Session = Depends(get_session)):
+    username = data.username.strip().lower() # sanitization or normalization
+    
+    user = session.exec(
+        select(User).where(User.username == username)
+        ).first()
+    
+    if user is None:
+        raise HTTPException(status_code=401, detail="Bad Request, Incorrect username")
+    
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="Permission Denied. Your account is deactivated. Contact Admin.")
+    
+    # check password
+    if not check_password(plain_password=data.password, hashed_password= user.password):
+        raise HTTPException(status_code=401, detail="Bad Request: Incorrect password")
+    
+    # Logged in successfully
+    # Return access token (jwt token)
+    token = create_access_token(user.id)
+    
+    return {"access_token": token}
