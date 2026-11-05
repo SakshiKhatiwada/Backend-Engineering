@@ -4,6 +4,7 @@ from sqlmodel import Session, SQLModel, Field, select
 from app.db import get_session
 from app.models import User
 from app.utils import hash_password, check_password, create_access_token
+from app.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -71,3 +72,8 @@ def user_login(data: UserLogin, session: Session = Depends(get_session)):
     token = create_access_token(user.id)
     
     return {"access_token": token}
+
+
+@router.get("/profile", status_code=200)
+def user_profile(current_user: User = Depends(get_current_user)):
+    return current_user.model_dump(exclude="password")
