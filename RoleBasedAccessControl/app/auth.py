@@ -5,12 +5,12 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from pydantic import ValidationError
 
-from RoleBasedAccessControl.app.models import User
-from RoleBasedAccessControl.app.utils import get_user
+from app.models import User
+from app.utils import get_user
 
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
-from data import fake_user_db, refresh_tokens
+from app.data import fake_user_db, refresh_tokens
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") # yo endpoint maa username and password pathaaye token paauxa user le. We'll implement it later
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated='auto')

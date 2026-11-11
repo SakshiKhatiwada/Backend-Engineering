@@ -1,6 +1,6 @@
 "fastapi[standard]"
 sqlmodel==0.0.48
-passlib[bcrypt]
+bcrypt==4.0.1
 python-jose[cryptography]
 sqlmodel #ORM
 pyjwt # validating json web tokens

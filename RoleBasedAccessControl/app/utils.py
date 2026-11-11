@@ -1,4 +1,4 @@
-from RoleBasedAccessControl.app.models import User
+from app.models import User
 
 
 def get_user(db, username: str):
