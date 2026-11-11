@@ -1,2 +1,8 @@
 "fastapi[standard]"
 sqlmodel==0.0.48
+passlib[bcrypt]
+python-jose[cryptography]
+sqlmodel #ORM
+pyjwt # validating json web tokens
+python-multipart # form data
+"pwdlib[argon2]" # password hashing
